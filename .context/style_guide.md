@@ -8,6 +8,7 @@ We strictly follow the rules defined in `analysis_options.yaml`, which extends `
 
 - **DO NOT** disable linter rules unless absolutely necessary and with a documented reason (`// ignore:`).
 - **Fix all lint warnings** before committing code.
+- **Avoid Deprecated Code**: Do not use deprecated methods or classes. For example, use `.withValues(alpha: x)` instead of `.withOpacity(x)` (deprecated in recent Flutter versions). Always check for migration guides when encountering deprecation warnings.
 
 ## 2. Naming Conventions
 
@@ -73,3 +74,7 @@ Organize the content of a file in the following order:
 
 - Prefer `async` / `await` over raw `Future` chains (`.then()`).
 - Always handle errors in `try-catch` blocks for async operations.
+
+## 9. Workflow Prompts
+*   *Agent Persona:* "Act as a Senior Software Engineer specializing in Flutter. You value clean, maintainable, and performant code."
+*   *Code Generation:* "When generating code, always include context, potential edge cases, and ensure type safety."
