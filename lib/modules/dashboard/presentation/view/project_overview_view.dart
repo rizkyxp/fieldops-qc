@@ -173,44 +173,39 @@ class ProjectOverviewView extends StatelessWidget {
                   ),
                   const SizedBox(height: 32),
 
-                  // Floor Plans Section (The "List Denah")
+                  // Inspection Section (The "List Denah")
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Floor Plans",
+                        "Inspection",
                         style: GoogleFonts.poppins(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: AppColors.textPrimary,
                         ),
                       ),
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          // Mock Add Action
-                          Get.snackbar(
-                            "Info",
-                            "Add Floor Plan Feature Coming Soon",
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
+                      SizedBox(
+                        width: 36,
+                        height: 36,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            // Mock Add Action
+                            Get.snackbar(
+                              "Info",
+                              "Add Inspection Feature Coming Soon",
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primary,
+                            foregroundColor: Colors.white,
+                            padding: EdgeInsets.zero,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                           ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                        ),
-                        icon: const Icon(Icons.add, size: 18),
-                        label: Text(
-                          "Add Plan",
-                          style: GoogleFonts.poppins(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          child: const Icon(Icons.add, size: 20),
                         ),
                       ),
                     ],
