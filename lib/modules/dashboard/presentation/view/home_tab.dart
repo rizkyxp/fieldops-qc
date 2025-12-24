@@ -3,6 +3,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 import '../controller/dashboard_controller.dart';
 import 'project_overview_view.dart';
+import 'all_projects_view.dart';
+import 'widgets/project_card.dart';
+import 'widgets/task_card.dart';
+import 'widgets/recent_activity_item.dart';
+import 'recent_activity_view.dart';
 import '../../../../core/theme/app_colors.dart';
 
 class HomeTab extends StatefulWidget {
@@ -136,12 +141,17 @@ class _HomeTabState extends State<HomeTab> {
                       color: AppColors.textPrimary,
                     ),
                   ),
-                  Text(
-                    "See All",
-                    style: GoogleFonts.poppins(
-                      fontSize: 14,
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.w600,
+                  GestureDetector(
+                    onTap: () {
+                      Get.find<DashboardController>().changeTabIndex(0);
+                    },
+                    child: Text(
+                      "See All",
+                      style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ],
@@ -149,7 +159,7 @@ class _HomeTabState extends State<HomeTab> {
               const SizedBox(height: 16),
 
               SizedBox(
-                height: 150,
+                height: 230,
                 child: Stack(
                   children: [
                     PageView(
@@ -160,23 +170,32 @@ class _HomeTabState extends State<HomeTab> {
                         });
                       },
                       children: [
-                        _buildTaskCard(
-                          "Inspect Machinery",
-                          "Due Today, 5:00 PM",
-                          "High",
-                          Colors.redAccent,
+                        TaskCard(
+                          title: "Inspect Machinery",
+                          subtitle: "Due Today, 5:00 PM",
+                          priority: "High",
+                          priorityColor: Colors.redAccent,
+                          projectName: "Area B - Maintenance",
+                          floorPlan: "Generator Room",
+                          onTap: () {},
                         ),
-                        _buildTaskCard(
-                          "Safety Report",
-                          "Due Tomorrow",
-                          "Medium",
-                          Colors.orangeAccent,
+                        TaskCard(
+                          title: "Safety Report",
+                          subtitle: "Due Tomorrow",
+                          priority: "Medium",
+                          priorityColor: Colors.orangeAccent,
+                          projectName: "Safety Inspection Area B",
+                          floorPlan: "Main Hall - Level 1",
+                          onTap: () {},
                         ),
-                        _buildTaskCard(
-                          "Team Meeting",
-                          "Fri, 10:00 AM",
-                          "Normal",
-                          Colors.blueAccent,
+                        TaskCard(
+                          title: "Team Meeting",
+                          subtitle: "Fri, 10:00 AM",
+                          priority: "Normal",
+                          priorityColor: Colors.blueAccent,
+                          projectName: "Site C - Excavation",
+                          floorPlan: "Meeting Room A",
+                          onTap: () {},
                         ),
                       ],
                     ),
@@ -257,13 +276,29 @@ class _HomeTabState extends State<HomeTab> {
               ),
               const SizedBox(height: 32),
 
-              Text(
-                "Ongoing Projects",
-                style: GoogleFonts.poppins(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Ongoing Projects",
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () => Get.to(() => const AllProjectsView()),
+                    child: Text(
+                      "See All",
+                      style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 16),
 
@@ -272,11 +307,13 @@ class _HomeTabState extends State<HomeTab> {
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
-                    _buildProjectCard(
-                      "Safety Inspection Area B",
-                      "https://picsum.photos/seed/construction_project/800/600",
-                      0.75,
-                      "3 Personnel",
+                    ProjectCard(
+                      title: "Safety Inspection Area B",
+                      imageUrl:
+                          "https://picsum.photos/seed/construction_project/800/600",
+                      progress: 0.75,
+                      personnel: "3 Personnel",
+                      supervisorImageUrl: "https://i.pravatar.cc/150?u=1",
                       onTap: () => Get.to(
                         () => const ProjectOverviewView(
                           projectTitle: "Safety Inspection Area B",
@@ -288,11 +325,12 @@ class _HomeTabState extends State<HomeTab> {
                       ),
                     ),
                     const SizedBox(width: 16),
-                    _buildProjectCard(
-                      "Area B - Maintenance",
-                      "https://picsum.photos/seed/siteB/400/200",
-                      0.4,
-                      "8 Personnel",
+                    ProjectCard(
+                      title: "Area B - Maintenance",
+                      imageUrl: "https://picsum.photos/seed/siteB/400/200",
+                      progress: 0.4,
+                      personnel: "8 Personnel",
+                      supervisorImageUrl: "https://i.pravatar.cc/150?u=2",
                     ),
                   ],
                 ),
@@ -310,12 +348,15 @@ class _HomeTabState extends State<HomeTab> {
                       color: AppColors.textPrimary,
                     ),
                   ),
-                  Text(
-                    "See All",
-                    style: GoogleFonts.poppins(
-                      fontSize: 14,
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.w600,
+                  GestureDetector(
+                    onTap: () => Get.to(() => const RecentActivityView()),
+                    child: Text(
+                      "See All",
+                      style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ],
@@ -342,11 +383,18 @@ class _HomeTabState extends State<HomeTab> {
                     "Team Briefing",
                     "Maintenance Report",
                   ];
-                  return _buildRecentActivityItem(
-                    users[index % users.length],
-                    actions[index % actions.length],
-                    "${index + 2}m ago",
-                    index % 3 != 0, // Mock success status
+                  return RecentActivityItem(
+                    userName: users[index % users.length],
+                    action: actions[index % actions.length],
+                    time: "${index + 2}m ago",
+                    isSuccess: index % 3 != 0,
+                    onTap: () => _showActivityDetail(
+                      context,
+                      users[index % users.length],
+                      actions[index % actions.length],
+                      "${index + 2}m ago",
+                      index % 3 != 0,
+                    ),
                   );
                 },
               ),
@@ -410,290 +458,115 @@ class _HomeTabState extends State<HomeTab> {
     );
   }
 
-  Widget _buildProjectCard(
-    String title,
-    String imageUrl,
-    double progress,
-    String personnel, {
-    VoidCallback? onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 160,
-        decoration: BoxDecoration(
-          color: Colors.black,
-          borderRadius: BorderRadius.circular(24),
-          image: DecorationImage(
-            image: NetworkImage(imageUrl),
-            fit: BoxFit.cover,
-            colorFilter: ColorFilter.mode(
-              Colors.black.withValues(alpha: 0.3),
-              BlendMode.darken,
-            ),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.primary.withValues(alpha: 0.1),
-              blurRadius: 16,
-              offset: const Offset(0, 8),
-            ),
-          ],
-        ),
-        child: Stack(
-          children: [
-            // Gradient Overlay
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(24),
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.transparent,
-                    Colors.black.withValues(alpha: 0.8),
-                  ],
-                ),
-              ),
-            ),
-
-            // Content
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    title,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.poppins(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      height: 1.2,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  Row(
-                    children: [
-                      const Icon(
-                        Icons.people_outline,
-                        color: Colors.white70,
-                        size: 14,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        personnel,
-                        style: GoogleFonts.poppins(
-                          fontSize: 12,
-                          color: Colors.white70,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-
-                  // Progress Bar
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Progress",
-                            style: GoogleFonts.poppins(
-                              fontSize: 10,
-                              color: Colors.white70,
-                            ),
-                          ),
-                          Text(
-                            "${(progress * 100).toInt()}%",
-                            style: GoogleFonts.poppins(
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 6),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(4),
-                        child: LinearProgressIndicator(
-                          value: progress,
-                          minHeight: 6,
-                          backgroundColor: Colors.white.withValues(alpha: 0.2),
-                          valueColor: const AlwaysStoppedAnimation<Color>(
-                            AppColors
-                                .secondary, // Greenish teal stands out on dark
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTaskCard(
-    String title,
-    String subtitle,
-    String priority,
-    Color priorityColor,
-  ) {
-    return Container(
-      // width: 240, // Removed to fill PageView width
-      margin: const EdgeInsets.symmetric(
-        horizontal: 4,
-      ), // Reverted to full width
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.05),
-            blurRadius: 16,
-            offset: const Offset(0, 8),
-          ),
-        ],
-        border: Border.all(color: AppColors.tertiary.withValues(alpha: 0.1)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 4,
-                ),
-                decoration: BoxDecoration(
-                  color: priorityColor.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  priority,
-                  style: GoogleFonts.poppins(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w600,
-                    color: priorityColor,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                title,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: GoogleFonts.poppins(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Icon(
-                Icons.access_time_filled,
-                size: 16,
-                color: AppColors.textSecondary,
-              ),
-              const SizedBox(width: 6),
-              Text(
-                subtitle,
-                style: GoogleFonts.poppins(
-                  fontSize: 12,
-                  color: AppColors.textSecondary,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildRecentActivityItem(
+  void _showActivityDetail(
+    BuildContext context,
     String userName,
     String action,
     String time,
     bool isSuccess,
   ) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.03),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: isSuccess
-                  ? Colors.green.withValues(alpha: 0.1)
-                  : Colors.orange.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(
-              isSuccess ? Icons.check_circle_outline : Icons.pending_actions,
-              color: isSuccess ? Colors.green : Colors.orange,
-              size: 16,
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  userName,
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          userName,
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        Text(
+                          time,
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Icon(
+                    isSuccess
+                        ? Icons.check_circle
+                        : Icons.warning_amber_rounded,
+                    color: isSuccess ? Colors.green : Colors.orange,
+                    size: 28,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              Text(
+                "Activity",
+                style: GoogleFonts.poppins(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textSecondary,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                action,
+                style: GoogleFonts.poppins(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppColors.background,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Text(
+                  "Detailed description of this activity would appear here. This is a placeholder for the activity details.",
                   style: GoogleFonts.poppins(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
                     color: AppColors.textPrimary,
+                    height: 1.5,
                   ),
                 ),
-                Text(
-                  action,
-                  style: GoogleFonts.poppins(
-                    fontSize: 10,
-                    color: AppColors.textSecondary,
+              ),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => Get.back(),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    elevation: 0,
+                  ),
+                  child: Text(
+                    "Close",
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          Text(
-            time,
-            style: GoogleFonts.poppins(
-              fontSize: 10,
-              fontWeight: FontWeight.w500,
-              color: AppColors.textSecondary,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

@@ -3,7 +3,10 @@ import 'package:get/get.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../controller/dashboard_controller.dart';
 import 'home_tab.dart';
-import 'other_tabs_placeholder.dart';
+import 'tasks_tab.dart';
+import 'chat_tab.dart';
+import 'reflect_tab.dart';
+
 import 'profile_tab.dart';
 
 class DashboardView extends GetView<DashboardController> {
@@ -21,7 +24,7 @@ class DashboardView extends GetView<DashboardController> {
               index: controller.tabIndex.value,
               children: const [
                 TasksTab(),
-                ChatsTab(),
+                ChatTab(),
                 HomeTab(),
                 ReflectTab(),
                 ProfileTab(),

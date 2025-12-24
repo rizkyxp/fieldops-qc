@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/theme/app_colors.dart';
 import 'project_detail_view.dart';
+import 'reflect_detail_view.dart';
 
 class ProjectOverviewView extends StatelessWidget {
   final String projectTitle;
@@ -22,6 +23,13 @@ class ProjectOverviewView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Get.snackbar("Chat", "Team Chat Feature Coming Soon");
+        },
+        backgroundColor: AppColors.primary,
+        child: const Icon(Icons.chat_bubble_outline, color: Colors.white),
+      ),
       body: CustomScrollView(
         slivers: [
           // 1. Sliver App Bar with Image
@@ -75,47 +83,64 @@ class ProjectOverviewView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Progress Section
-                  Text(
-                    "Project Progress",
-                    style: GoogleFonts.poppins(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: LinearProgressIndicator(
-                      value: progress,
-                      minHeight: 10,
-                      backgroundColor: AppColors.tertiary.withValues(
-                        alpha: 0.1,
-                      ),
-                      valueColor: const AlwaysStoppedAnimation<Color>(
-                        AppColors.secondary,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "${(progress * 100).toInt()}% Completed",
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          color: AppColors.textSecondary,
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(
+                        () => ReflectDetailView(
+                          projectTitle: projectTitle,
+                          progress: progress,
+                          personnelCount: personnelCount,
+                          imageUrl: imageUrl,
                         ),
-                      ),
-                      Text(
-                        "Deadline: Dec 31, 2025",
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          color: AppColors.textSecondary,
+                      );
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Project Progress",
+                          style: GoogleFonts.poppins(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textPrimary,
+                          ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 12),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: LinearProgressIndicator(
+                            value: progress,
+                            minHeight: 10,
+                            backgroundColor: AppColors.tertiary.withValues(
+                              alpha: 0.1,
+                            ),
+                            valueColor: const AlwaysStoppedAnimation<Color>(
+                              AppColors.secondary,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "${(progress * 100).toInt()}% Completed",
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                            Text(
+                              "Deadline: Dec 31, 2025",
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 32),
 
