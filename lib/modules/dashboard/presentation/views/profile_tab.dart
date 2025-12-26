@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../auth/presentation/controllers/auth_controller.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/utils/app_dialogs.dart';
 
 class ProfileTab extends StatelessWidget {
   const ProfileTab({super.key});
@@ -87,7 +88,17 @@ class ProfileTab extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    authController.logout();
+                    AppDialogs.showConfirmation(
+                      title: "Logout",
+                      message:
+                          "Are you sure you want to log out of your account?",
+                      confirmText: "Logout",
+                      confirmColor: AppColors.error,
+                      icon: Icons.logout_rounded,
+                      onConfirm: () {
+                        authController.logout();
+                      },
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.redAccent.withValues(alpha: 0.1),
