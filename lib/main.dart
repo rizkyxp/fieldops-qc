@@ -6,7 +6,10 @@ import 'modules/auth/presentation/view/login_view.dart';
 import 'modules/dashboard/presentation/binding/dashboard_binding.dart';
 import 'modules/dashboard/presentation/view/dashboard_view.dart';
 
-void main() {
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+void main() async {
+  await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
 

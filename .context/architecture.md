@@ -30,7 +30,14 @@ lib/
 ### Data Layer (`data/`)
 Responsible for handling data operations.
 - **model**: Plain Dart objects (POJOs) with `fromJson` and `toJson` methods.
+    - **Note**: Strict separation between Request and Response models is enforced.
+    - Example: `LoginRequestModel`, `LoginResponseModel`.
 - **datasource**: Directly communicates with external sources (APIs, Firebase, shared_preferences, SQLite).
+- **repository**: The single source of truth for data. It coordinates between local and remote data sources and handles error handling/exceptions before passing data to the controller.
+
+### Environment Configuration
+- Use `.env` files for configuration (e.g., `BASE_URL`).
+- Access via `dotenv.env['KEY']`.
 - **repository**: The single source of truth for data. It coordinates between local and remote data sources and handles error handling/exceptions before passing data to the controller.
 
 ### Presentation Layer (`presentation/`)
