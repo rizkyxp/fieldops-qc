@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../controller/dashboard_controller.dart';
 import 'home_tab.dart';
-import 'tasks_tab.dart';
-import 'chat_tab.dart';
-import 'reflect_tab.dart';
+import '../../../task/presentation/view/tasks_tab.dart';
+import '../../../chat/presentation/view/chat_tab.dart';
+import '../../../reflect/presentation/view/reflect_tab.dart';
 
 import 'profile_tab.dart';
 

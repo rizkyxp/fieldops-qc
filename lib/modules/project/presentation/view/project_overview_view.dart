@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/theme/app_colors.dart';
 import 'project_detail_view.dart';
-import 'reflect_detail_view.dart';
+import '../../../reflect/presentation/view/reflect_detail_view.dart';
 
 class ProjectOverviewView extends StatelessWidget {
   final String projectTitle;

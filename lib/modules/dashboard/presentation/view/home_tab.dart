@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 import '../controller/dashboard_controller.dart';
-import 'project_overview_view.dart';
-import 'all_projects_view.dart';
-import 'widgets/project_card.dart';
-import 'widgets/task_card.dart';
-import 'widgets/recent_activity_item.dart';
-import 'recent_activity_view.dart';
+import '../../../project/presentation/view/project_overview_view.dart';
+import '../../../project/presentation/view/all_projects_view.dart';
+import '../../../project/presentation/view/widgets/project_card.dart';
+import '../../../task/presentation/view/widgets/task_card.dart';
+import '../../../activity/presentation/view/widgets/recent_activity_item.dart';
+import '../../../activity/presentation/view/recent_activity_view.dart';
 import '../../../../core/theme/app_colors.dart';
 
 class HomeTab extends StatefulWidget {

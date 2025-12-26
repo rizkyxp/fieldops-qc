@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/theme/app_colors.dart';
-import 'widgets/project_card.dart';
+import '../../../project/presentation/view/widgets/project_card.dart';
 import 'reflect_detail_view.dart';
 
 class ReflectTab extends StatefulWidget {
