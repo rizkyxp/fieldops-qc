@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/theme/app_colors.dart';
 import 'widgets/chat_card.dart';
 
@@ -53,7 +52,7 @@ class ChatTab extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "Messages",
-          style: GoogleFonts.poppins(
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             color: AppColors.textPrimary,
           ),

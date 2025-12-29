@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import '../../../../core/theme/app_colors.dart';
@@ -63,7 +62,7 @@ class _CreateProjectViewState extends State<CreateProjectView> {
             children: [
               ListTile(
                 leading: const Icon(Icons.camera_alt, color: AppColors.primary),
-                title: Text("Take Photo", style: GoogleFonts.poppins()),
+                title: const Text("Take Photo"),
                 onTap: () {
                   Get.back();
                   _pickImage(ImageSource.camera);
@@ -74,10 +73,7 @@ class _CreateProjectViewState extends State<CreateProjectView> {
                   Icons.photo_library,
                   color: AppColors.primary,
                 ),
-                title: Text(
-                  "Choose from Gallery",
-                  style: GoogleFonts.poppins(),
-                ),
+                title: const Text("Choose from Gallery"),
                 onTap: () {
                   Get.back();
                   _pickImage(ImageSource.gallery);
@@ -153,7 +149,7 @@ class _CreateProjectViewState extends State<CreateProjectView> {
       appBar: AppBar(
         title: Text(
           "Create New Project",
-          style: GoogleFonts.poppins(
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             color: AppColors.textPrimary,
           ),
@@ -209,7 +205,7 @@ class _CreateProjectViewState extends State<CreateProjectView> {
                               const SizedBox(height: 12),
                               Text(
                                 "Upload Project Photo",
-                                style: GoogleFonts.poppins(
+                                style: const TextStyle(
                                   color: AppColors.textSecondary,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -295,7 +291,7 @@ class _CreateProjectViewState extends State<CreateProjectView> {
               // 5. Assign Members
               Text(
                 "Assign Members",
-                style: GoogleFonts.poppins(
+                style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
                   color: AppColors.textPrimary,
@@ -385,7 +381,7 @@ class _CreateProjectViewState extends State<CreateProjectView> {
                   ),
                   child: Text(
                     "Create Project",
-                    style: GoogleFonts.poppins(
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
@@ -412,7 +408,7 @@ class _CreateProjectViewState extends State<CreateProjectView> {
       children: [
         Text(
           label,
-          style: GoogleFonts.poppins(
+          style: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.bold,
             color: AppColors.textPrimary,
@@ -424,7 +420,7 @@ class _CreateProjectViewState extends State<CreateProjectView> {
           validator: validator,
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: GoogleFonts.poppins(color: AppColors.textSecondary),
+            hintStyle: const TextStyle(color: AppColors.textSecondary),
             prefixIcon: Icon(icon, color: AppColors.textSecondary),
             filled: true,
             fillColor: Colors.white,
@@ -452,7 +448,7 @@ class _CreateProjectViewState extends State<CreateProjectView> {
       children: [
         Text(
           label,
-          style: GoogleFonts.poppins(
+          style: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.bold,
             color: AppColors.textPrimary,
@@ -479,7 +475,7 @@ class _CreateProjectViewState extends State<CreateProjectView> {
                   selectedDate != null
                       ? "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}"
                       : "Select Date",
-                  style: GoogleFonts.poppins(
+                  style: TextStyle(
                     color: selectedDate != null
                         ? AppColors.textPrimary
                         : AppColors.textSecondary,
@@ -509,7 +505,7 @@ class _CreateProjectViewState extends State<CreateProjectView> {
             children: [
               Text(
                 "Select Member",
-                style: GoogleFonts.poppins(
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: AppColors.textPrimary,
@@ -524,7 +520,7 @@ class _CreateProjectViewState extends State<CreateProjectView> {
                   ),
                   title: Text(
                     member['name'],
-                    style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
+                    style: const TextStyle(fontWeight: FontWeight.w500),
                   ),
                   trailing: isSelected
                       ? const Icon(Icons.check_circle, color: AppColors.primary)

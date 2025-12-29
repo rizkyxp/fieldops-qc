@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../../../core/theme/app_colors.dart';
 
 class TaskCard extends StatelessWidget {
@@ -60,7 +59,7 @@ class TaskCard extends StatelessWidget {
                   ),
                   child: Text(
                     priority,
-                    style: GoogleFonts.poppins(
+                    style: TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w600,
                       color: priorityColor,
@@ -74,7 +73,7 @@ class TaskCard extends StatelessWidget {
                   title,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: GoogleFonts.poppins(
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: AppColors.textPrimary,
@@ -87,7 +86,7 @@ class TaskCard extends StatelessWidget {
                   subtitle,
                   maxLines: 1, // Limit subtitle to 1 line to save space
                   overflow: TextOverflow.ellipsis,
-                  style: GoogleFonts.poppins(
+                  style: const TextStyle(
                     fontSize: 12,
                     color: AppColors.textSecondary,
                   ),
@@ -114,7 +113,7 @@ class TaskCard extends StatelessWidget {
                         projectName,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.poppins(
+                        style: const TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.w500,
                           color: AppColors.textSecondary,
@@ -139,7 +138,7 @@ class TaskCard extends StatelessWidget {
                         floorPlan,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.poppins(
+                        style: const TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.w500,
                           color: AppColors.textSecondary,
@@ -162,7 +161,7 @@ class TaskCard extends StatelessWidget {
                     const SizedBox(width: 6),
                     Text(
                       "Today, 10:00 AM",
-                      style: GoogleFonts.poppins(
+                      style: const TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w500,
                         color: AppColors.textSecondary,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/theme/app_colors.dart';
 import 'widgets/task_card.dart';
 
@@ -57,7 +56,7 @@ class TasksTab extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "My Tasks",
-          style: GoogleFonts.poppins(
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             color: AppColors.textPrimary,
           ),

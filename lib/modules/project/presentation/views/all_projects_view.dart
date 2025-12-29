@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/theme/app_colors.dart';
 import 'widgets/project_card.dart';
 import 'project_overview_view.dart';
@@ -23,20 +22,20 @@ class AllProjectsView extends StatelessWidget {
           backgroundColor: AppColors.background,
           elevation: 0,
           leading: const BackButton(color: AppColors.textPrimary),
-          title: Text(
+          title: const Text(
             "All Projects",
-            style: GoogleFonts.poppins(
+            style: TextStyle(
               color: AppColors.textPrimary,
               fontWeight: FontWeight.bold,
               fontSize: 18,
             ),
           ),
-          bottom: TabBar(
+          bottom: const TabBar(
             labelColor: AppColors.primary,
             unselectedLabelColor: AppColors.textSecondary,
             indicatorColor: AppColors.primary,
-            labelStyle: GoogleFonts.poppins(fontWeight: FontWeight.w600),
-            tabs: const [
+            labelStyle: TextStyle(fontWeight: FontWeight.w600),
+            tabs: [
               Tab(text: "In Progress"),
               Tab(text: "Completed"),
               Tab(text: "Archived"),
@@ -69,7 +68,7 @@ class AllProjectsView extends StatelessWidget {
         return Center(
           child: Text(
             "No projects found",
-            style: GoogleFonts.poppins(color: AppColors.textSecondary),
+            style: TextStyle(color: AppColors.textSecondary),
           ),
         );
       }

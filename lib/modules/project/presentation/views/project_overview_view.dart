@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/theme/app_colors.dart';
 import 'project_detail_view.dart';
 import '../../../reflect/presentation/views/reflect_detail_view.dart';
@@ -42,7 +41,7 @@ class ProjectOverviewView extends StatelessWidget {
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
                 projectTitle,
-                style: GoogleFonts.poppins(
+                style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
@@ -99,7 +98,7 @@ class ProjectOverviewView extends StatelessWidget {
                       children: [
                         Text(
                           "Project Progress",
-                          style: GoogleFonts.poppins(
+                          style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: AppColors.textPrimary,
@@ -125,14 +124,14 @@ class ProjectOverviewView extends StatelessWidget {
                           children: [
                             Text(
                               "${(progress * 100).toInt()}% Completed",
-                              style: GoogleFonts.poppins(
+                              style: const TextStyle(
                                 fontSize: 14,
                                 color: AppColors.textSecondary,
                               ),
                             ),
                             Text(
                               "Deadline: Dec 31, 2025",
-                              style: GoogleFonts.poppins(
+                              style: const TextStyle(
                                 fontSize: 14,
                                 color: AppColors.textSecondary,
                               ),
@@ -147,7 +146,7 @@ class ProjectOverviewView extends StatelessWidget {
                   // Personnel Section
                   Text(
                     "Team Members ($personnelCount)",
-                    style: GoogleFonts.poppins(
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: AppColors.textPrimary,
@@ -179,7 +178,7 @@ class ProjectOverviewView extends StatelessWidget {
                     children: [
                       Text(
                         "Inspection",
-                        style: GoogleFonts.poppins(
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: AppColors.textPrimary,
@@ -247,7 +246,7 @@ class ProjectOverviewView extends StatelessWidget {
           backgroundColor: color,
           child: Text(
             name[0],
-            style: GoogleFonts.poppins(
+            style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
@@ -256,10 +255,7 @@ class ProjectOverviewView extends StatelessWidget {
         const SizedBox(height: 4),
         Text(
           name.split(' ')[0], // First name
-          style: GoogleFonts.poppins(
-            fontSize: 10,
-            color: AppColors.textSecondary,
-          ),
+          style: const TextStyle(fontSize: 10, color: AppColors.textSecondary),
         ),
       ],
     );
@@ -276,10 +272,7 @@ class ProjectOverviewView extends StatelessWidget {
         const SizedBox(height: 4),
         Text(
           "Add",
-          style: GoogleFonts.poppins(
-            fontSize: 10,
-            color: AppColors.textSecondary,
-          ),
+          style: const TextStyle(fontSize: 10, color: AppColors.textSecondary),
         ),
       ],
     );
@@ -335,7 +328,7 @@ class ProjectOverviewView extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: GoogleFonts.poppins(
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: AppColors.textPrimary,
@@ -362,7 +355,7 @@ class ProjectOverviewView extends StatelessWidget {
                       const SizedBox(width: 8),
                       Text(
                         "${(progress * 100).toInt()}%",
-                        style: GoogleFonts.poppins(
+                        style: const TextStyle(
                           fontSize: 12,
                           color: AppColors.textSecondary,
                           fontWeight: FontWeight.w600,

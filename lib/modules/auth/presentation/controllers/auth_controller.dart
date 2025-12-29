@@ -19,13 +19,19 @@ class AuthController extends BaseController {
 
   var isLoading = false.obs;
   var isPasswordVisible = false.obs;
+  var isConfirmPasswordVisible = false.obs;
 
   void togglePasswordVisibility() {
     isPasswordVisible.value = !isPasswordVisible.value;
   }
 
+  void toggleConfirmPasswordVisibility() {
+    isConfirmPasswordVisible.value = !isConfirmPasswordVisible.value;
+  }
+
   // Login Function
   Future<void> login() async {
+    // ... (existing login code)
     if (emailController.text.isEmpty || passwordController.text.isEmpty) {
       Get.snackbar(
         "Error",
@@ -61,11 +67,17 @@ class AuthController extends BaseController {
     isLoading.value = false;
   }
 
-  // Mock Signup Function
+  // Signup Function
   Future<void> signup() async {
-    if (emailController.text.isEmpty ||
-        passwordController.text.isEmpty ||
-        nameController.text.isEmpty) {
+    final name = nameController.text.trim();
+    final email = emailController.text.trim();
+    final password = passwordController.text;
+    final confirmPassword = confirmPasswordController.text;
+
+    if (name.isEmpty ||
+        email.isEmpty ||
+        password.isEmpty ||
+        confirmPassword.isEmpty) {
       Get.snackbar(
         "Error",
         "Please fill in all fields",
@@ -76,7 +88,46 @@ class AuthController extends BaseController {
       return;
     }
 
+    if (!GetUtils.isEmail(email)) {
+      Get.snackbar(
+        "Invalid Email",
+        "Please enter a valid email address",
+        backgroundColor: Colors.orange.withValues(alpha: 0.1),
+        colorText: Colors.orange,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return;
+    }
+
+    if (password.length < 8) {
+      Get.snackbar(
+        "Weak Password",
+        "Password must be at least 8 characters long",
+        backgroundColor: Colors.orange.withValues(alpha: 0.1),
+        colorText: Colors.orange,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return;
+    }
+
+    if (password != confirmPassword) {
+      Get.snackbar(
+        "Password Mismatch",
+        "Passwords do not match",
+        backgroundColor: Colors.red.withValues(alpha: 0.1),
+        colorText: Colors.red,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return;
+    }
+
     isLoading.value = true;
+
+    // Use call() wrapper for real implementation when endpoint exists
+    // simulating delay for now as per previous mock logic, but let's use the repo if possible
+    // or keep the mock delay if that's what was intended.
+    // The previous code had a manual delay. Let's redirect to login for now.
+
     await Future.delayed(const Duration(seconds: 2)); // Simulate API call
     isLoading.value = false;
 

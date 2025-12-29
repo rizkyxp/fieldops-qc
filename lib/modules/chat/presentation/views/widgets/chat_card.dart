@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../../../core/theme/app_colors.dart';
 
 class ChatCard extends StatelessWidget {
@@ -47,7 +46,7 @@ class ChatCard extends StatelessWidget {
               child: imageUrl == null
                   ? Text(
                       title[0],
-                      style: GoogleFonts.poppins(
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: AppColors.primary,
@@ -70,7 +69,7 @@ class ChatCard extends StatelessWidget {
                           title,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.poppins(
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: AppColors.textPrimary,
@@ -80,7 +79,7 @@ class ChatCard extends StatelessWidget {
                       const SizedBox(width: 8),
                       Text(
                         time,
-                        style: GoogleFonts.poppins(
+                        style: TextStyle(
                           fontSize: 12,
                           color: unreadCount > 0
                               ? AppColors.primary
@@ -100,7 +99,7 @@ class ChatCard extends StatelessWidget {
                           lastMessage,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.poppins(
+                          style: TextStyle(
                             fontSize: 14,
                             color: unreadCount > 0
                                 ? AppColors.textPrimary
@@ -121,7 +120,7 @@ class ChatCard extends StatelessWidget {
                           ),
                           child: Text(
                             unreadCount.toString(),
-                            style: GoogleFonts.poppins(
+                            style: const TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,

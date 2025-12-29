@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../project/presentation/views/widgets/project_card.dart';
 import 'reflect_detail_view.dart';
@@ -62,7 +61,7 @@ class _ReflectTabState extends State<ReflectTab> {
       appBar: AppBar(
         title: Text(
           "Reflect",
-          style: GoogleFonts.poppins(
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             color: AppColors.textPrimary,
           ),
@@ -187,7 +186,7 @@ class _ReflectTabState extends State<ReflectTab> {
                       project['title'],
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.poppins(
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: AppColors.textPrimary,
@@ -206,7 +205,7 @@ class _ReflectTabState extends State<ReflectTab> {
                         const SizedBox(width: 6),
                         Text(
                           project['personnel'],
-                          style: GoogleFonts.poppins(
+                          style: const TextStyle(
                             fontSize: 10,
                             color: AppColors.textSecondary,
                           ),
@@ -238,7 +237,7 @@ class _ReflectTabState extends State<ReflectTab> {
                         const SizedBox(width: 8),
                         Text(
                           "${(project['progress'] * 100).toInt()}%",
-                          style: GoogleFonts.poppins(
+                          style: const TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.bold,
                             color: AppColors.textPrimary,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/theme/app_colors.dart';
 
 class ReflectDetailView extends StatelessWidget {
@@ -75,7 +74,7 @@ class ReflectDetailView extends StatelessWidget {
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
                 projectTitle,
-                style: GoogleFonts.poppins(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -119,7 +118,7 @@ class ReflectDetailView extends StatelessWidget {
                   // Project Summary Section
                   Text(
                     "Project Summary",
-                    style: GoogleFonts.poppins(
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: AppColors.textPrimary,
@@ -135,14 +134,14 @@ class ReflectDetailView extends StatelessWidget {
                         children: [
                           Text(
                             "Overall Progress",
-                            style: GoogleFonts.poppins(
+                            style: const TextStyle(
                               fontSize: 12,
                               color: AppColors.textSecondary,
                             ),
                           ),
                           Text(
                             "${(progress * 100).toInt()}%",
-                            style: GoogleFonts.poppins(
+                            style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
                               color: AppColors.secondary,
@@ -173,7 +172,7 @@ class ReflectDetailView extends StatelessWidget {
                   // Team Progress Section
                   Text(
                     "Team Progress",
-                    style: GoogleFonts.poppins(
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: AppColors.textPrimary,
@@ -265,7 +264,7 @@ class ReflectDetailView extends StatelessWidget {
           const SizedBox(height: 12),
           Text(
             value,
-            style: GoogleFonts.poppins(
+            style: const TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.bold,
               color: AppColors.textPrimary,
@@ -274,7 +273,7 @@ class ReflectDetailView extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             label,
-            style: GoogleFonts.poppins(
+            style: const TextStyle(
               fontSize: 10,
               color: AppColors.textSecondary,
             ),
@@ -315,7 +314,7 @@ class ReflectDetailView extends StatelessWidget {
                   children: [
                     Text(
                       member['name'],
-                      style: GoogleFonts.poppins(
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: AppColors.textPrimary,
@@ -323,7 +322,7 @@ class ReflectDetailView extends StatelessWidget {
                     ),
                     Text(
                       member['tasks'],
-                      style: GoogleFonts.poppins(
+                      style: const TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.w600,
                         color: AppColors.textSecondary,
@@ -333,7 +332,7 @@ class ReflectDetailView extends StatelessWidget {
                 ),
                 Text(
                   member['role'],
-                  style: GoogleFonts.poppins(
+                  style: const TextStyle(
                     fontSize: 12,
                     color: AppColors.textSecondary,
                   ),
@@ -359,7 +358,7 @@ class ReflectDetailView extends StatelessWidget {
                     const SizedBox(width: 8),
                     Text(
                       "${(member['progress'] * 100).toInt()}%",
-                      style: GoogleFonts.poppins(
+                      style: const TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
                         color: AppColors.secondary,

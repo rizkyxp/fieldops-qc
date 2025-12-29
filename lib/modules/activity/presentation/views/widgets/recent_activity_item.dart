@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../../../core/theme/app_colors.dart';
 
 class RecentActivityItem extends StatelessWidget {
@@ -37,7 +36,7 @@ class RecentActivityItem extends StatelessWidget {
                 children: [
                   Text(
                     userName,
-                    style: GoogleFonts.poppins(
+                    style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: AppColors.textPrimary,
@@ -45,7 +44,7 @@ class RecentActivityItem extends StatelessWidget {
                   ),
                   Text(
                     action,
-                    style: GoogleFonts.poppins(
+                    style: const TextStyle(
                       fontSize: 12,
                       color: AppColors.textSecondary,
                     ),
@@ -58,7 +57,7 @@ class RecentActivityItem extends StatelessWidget {
               children: [
                 Text(
                   time,
-                  style: GoogleFonts.poppins(
+                  style: const TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.w500,
                     color: AppColors.textSecondary,

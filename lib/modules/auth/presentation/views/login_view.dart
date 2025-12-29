@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../controllers/auth_controller.dart';
 import '../../../../core/theme/app_colors.dart';
 import 'signup_view.dart';
@@ -87,7 +86,7 @@ class LoginView extends GetView<AuthController> {
                     const SizedBox(height: 24),
                     Text(
                       "FieldOps QC",
-                      style: GoogleFonts.poppins(
+                      style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -115,7 +114,7 @@ class LoginView extends GetView<AuthController> {
                         children: [
                           Text(
                             "Welcome Back",
-                            style: GoogleFonts.poppins(
+                            style: const TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
                               color: AppColors.textPrimary,
@@ -124,7 +123,7 @@ class LoginView extends GetView<AuthController> {
                           const SizedBox(height: 8),
                           Text(
                             "Please sign in to your account.",
-                            style: GoogleFonts.poppins(
+                            style: const TextStyle(
                               fontSize: 14,
                               color: AppColors.textSecondary,
                             ),
@@ -137,7 +136,7 @@ class LoginView extends GetView<AuthController> {
                           TextField(
                             controller: controller.emailController,
                             keyboardType: TextInputType.emailAddress,
-                            style: GoogleFonts.poppins(fontSize: 14),
+                            style: const TextStyle(fontSize: 14),
                             decoration: _inputDecoration(
                               hint: "Enter your email",
                               icon: Icons.email_outlined,
@@ -152,7 +151,7 @@ class LoginView extends GetView<AuthController> {
                             () => TextField(
                               controller: controller.passwordController,
                               obscureText: !controller.isPasswordVisible.value,
-                              style: GoogleFonts.poppins(fontSize: 14),
+                              style: const TextStyle(fontSize: 14),
                               decoration: _inputDecoration(
                                 hint: "Enter your password",
                                 icon: Icons.lock_outline,
@@ -173,9 +172,9 @@ class LoginView extends GetView<AuthController> {
                                   vertical: 8,
                                 ),
                               ),
-                              child: Text(
+                              child: const Text(
                                 "Forgot Password?",
-                                style: GoogleFonts.poppins(
+                                style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 13,
                                 ),
@@ -213,9 +212,9 @@ class LoginView extends GetView<AuthController> {
                                           strokeWidth: 2,
                                         ),
                                       )
-                                    : Text(
+                                    : const Text(
                                         "Sign In",
-                                        style: GoogleFonts.poppins(
+                                        style: TextStyle(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 16,
                                         ),
@@ -235,16 +234,16 @@ class LoginView extends GetView<AuthController> {
                       children: [
                         Text(
                           "Don't have an account? ",
-                          style: GoogleFonts.poppins(
+                          style: const TextStyle(
                             color: AppColors.textSecondary,
                             fontSize: 14,
                           ),
                         ),
                         GestureDetector(
                           onTap: () => Get.to(() => const SignupView()),
-                          child: Text(
+                          child: const Text(
                             "Sign Up",
-                            style: GoogleFonts.poppins(
+                            style: TextStyle(
                               color: AppColors.primary,
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
@@ -267,7 +266,7 @@ class LoginView extends GetView<AuthController> {
   Widget _buildTextFieldLabel(String label) {
     return Text(
       label,
-      style: GoogleFonts.poppins(
+      style: const TextStyle(
         fontSize: 13,
         fontWeight: FontWeight.w600,
         color: AppColors.textPrimary,

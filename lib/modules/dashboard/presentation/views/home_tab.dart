@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 import '../controllers/dashboard_controller.dart';
 import '../../../project/presentation/views/project_overview_view.dart';
@@ -71,14 +70,14 @@ class _HomeTabState extends State<HomeTab> {
                     children: [
                       Text(
                         "Good Morning,",
-                        style: GoogleFonts.poppins(
+                        style: const TextStyle(
                           fontSize: 14,
                           color: AppColors.textSecondary,
                         ),
                       ),
                       Text(
                         "Rizky Firmansyah",
-                        style: GoogleFonts.poppins(
+                        style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: AppColors.textPrimary,
@@ -135,7 +134,7 @@ class _HomeTabState extends State<HomeTab> {
                 children: [
                   Text(
                     "My Tasks",
-                    style: GoogleFonts.poppins(
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: AppColors.textPrimary,
@@ -147,7 +146,7 @@ class _HomeTabState extends State<HomeTab> {
                     },
                     child: Text(
                       "See All",
-                      style: GoogleFonts.poppins(
+                      style: TextStyle(
                         fontSize: 14,
                         color: AppColors.primary,
                         fontWeight: FontWeight.w600,
@@ -281,7 +280,7 @@ class _HomeTabState extends State<HomeTab> {
                 children: [
                   Text(
                     "Ongoing Projects",
-                    style: GoogleFonts.poppins(
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: AppColors.textPrimary,
@@ -291,7 +290,7 @@ class _HomeTabState extends State<HomeTab> {
                     onTap: () => Get.to(() => const AllProjectsView()),
                     child: Text(
                       "See All",
-                      style: GoogleFonts.poppins(
+                      style: TextStyle(
                         fontSize: 14,
                         color: AppColors.primary,
                         fontWeight: FontWeight.w600,
@@ -342,7 +341,7 @@ class _HomeTabState extends State<HomeTab> {
                 children: [
                   Text(
                     "Recent Activity",
-                    style: GoogleFonts.poppins(
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: AppColors.textPrimary,
@@ -352,7 +351,7 @@ class _HomeTabState extends State<HomeTab> {
                     onTap: () => Get.to(() => const RecentActivityView()),
                     child: Text(
                       "See All",
-                      style: GoogleFonts.poppins(
+                      style: TextStyle(
                         fontSize: 14,
                         color: AppColors.primary,
                         fontWeight: FontWeight.w600,
@@ -438,7 +437,7 @@ class _HomeTabState extends State<HomeTab> {
             children: [
               Text(
                 value,
-                style: GoogleFonts.poppins(
+                style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: AppColors.textPrimary,
@@ -446,7 +445,7 @@ class _HomeTabState extends State<HomeTab> {
               ),
               Text(
                 label,
-                style: GoogleFonts.poppins(
+                style: const TextStyle(
                   fontSize: 12,
                   color: AppColors.textSecondary,
                 ),
@@ -483,7 +482,7 @@ class _HomeTabState extends State<HomeTab> {
                       children: [
                         Text(
                           userName,
-                          style: GoogleFonts.poppins(
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: AppColors.textPrimary,
@@ -491,7 +490,7 @@ class _HomeTabState extends State<HomeTab> {
                         ),
                         Text(
                           time,
-                          style: GoogleFonts.poppins(
+                          style: const TextStyle(
                             fontSize: 12,
                             color: AppColors.textSecondary,
                           ),
@@ -511,7 +510,7 @@ class _HomeTabState extends State<HomeTab> {
               const SizedBox(height: 24),
               Text(
                 "Activity",
-                style: GoogleFonts.poppins(
+                style: const TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
                   color: AppColors.textSecondary,
@@ -520,7 +519,7 @@ class _HomeTabState extends State<HomeTab> {
               const SizedBox(height: 4),
               Text(
                 action,
-                style: GoogleFonts.poppins(
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: AppColors.textPrimary,
@@ -535,7 +534,7 @@ class _HomeTabState extends State<HomeTab> {
                 ),
                 child: Text(
                   "Detailed description of this activity would appear here. This is a placeholder for the activity details.",
-                  style: GoogleFonts.poppins(
+                  style: const TextStyle(
                     fontSize: 14,
                     color: AppColors.textPrimary,
                     height: 1.5,
@@ -557,7 +556,7 @@ class _HomeTabState extends State<HomeTab> {
                   ),
                   child: Text(
                     "Close",
-                    style: GoogleFonts.poppins(
+                    style: const TextStyle(
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
                     ),

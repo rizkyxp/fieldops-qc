@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/theme/app_colors.dart';
 import 'widgets/recent_activity_item.dart';
 
@@ -63,7 +62,7 @@ class RecentActivityView extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "Recent Activity",
-          style: GoogleFonts.poppins(
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             color: AppColors.textPrimary,
           ),
@@ -118,7 +117,7 @@ class RecentActivityView extends StatelessWidget {
                       children: [
                         Text(
                           activity['user'],
-                          style: GoogleFonts.poppins(
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: AppColors.textPrimary,
@@ -126,7 +125,7 @@ class RecentActivityView extends StatelessWidget {
                         ),
                         Text(
                           activity['time'],
-                          style: GoogleFonts.poppins(
+                          style: const TextStyle(
                             fontSize: 12,
                             color: AppColors.textSecondary,
                           ),
@@ -146,7 +145,7 @@ class RecentActivityView extends StatelessWidget {
               const SizedBox(height: 24),
               Text(
                 "Activity",
-                style: GoogleFonts.poppins(
+                style: const TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
                   color: AppColors.textSecondary,
@@ -155,7 +154,7 @@ class RecentActivityView extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 activity['action'],
-                style: GoogleFonts.poppins(
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: AppColors.textPrimary,
@@ -170,7 +169,7 @@ class RecentActivityView extends StatelessWidget {
                 ),
                 child: Text(
                   activity['detail'],
-                  style: GoogleFonts.poppins(
+                  style: const TextStyle(
                     fontSize: 14,
                     color: AppColors.textPrimary,
                     height: 1.5,
@@ -192,7 +191,7 @@ class RecentActivityView extends StatelessWidget {
                   ),
                   child: Text(
                     "Close",
-                    style: GoogleFonts.poppins(
+                    style: const TextStyle(
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
                     ),

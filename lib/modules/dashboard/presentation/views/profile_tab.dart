@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../auth/presentation/controllers/auth_controller.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/app_dialogs.dart';
@@ -44,7 +43,7 @@ class ProfileTab extends StatelessWidget {
                     const SizedBox(height: 16),
                     Text(
                       "Rizky Firmansyah",
-                      style: GoogleFonts.poppins(
+                      style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                         color: AppColors.textPrimary,
@@ -52,7 +51,7 @@ class ProfileTab extends StatelessWidget {
                     ),
                     Text(
                       "rizky@example.com", // Mock email or get from controller
-                      style: GoogleFonts.poppins(
+                      style: const TextStyle(
                         fontSize: 14,
                         color: AppColors.textSecondary,
                       ),
@@ -114,9 +113,9 @@ class ProfileTab extends StatelessWidget {
                     children: [
                       const Icon(Icons.logout, size: 20),
                       const SizedBox(width: 8),
-                      Text(
+                      const Text(
                         "Logout",
-                        style: GoogleFonts.poppins(
+                        style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                         ),
@@ -162,7 +161,7 @@ class ProfileTab extends StatelessWidget {
         ),
         title: Text(
           title,
-          style: GoogleFonts.poppins(
+          style: const TextStyle(
             fontWeight: FontWeight.w600,
             color: AppColors.textPrimary,
             fontSize: 16,

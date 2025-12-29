@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../../../core/theme/app_colors.dart';
 import 'dart:io';
 
@@ -104,7 +103,7 @@ class ProjectCard extends StatelessWidget {
                     title,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.poppins(
+                    style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -122,7 +121,7 @@ class ProjectCard extends StatelessWidget {
                       const SizedBox(width: 4),
                       Text(
                         personnel,
-                        style: GoogleFonts.poppins(
+                        style: const TextStyle(
                           fontSize: 12,
                           color: Colors.white70,
                         ),
@@ -140,14 +139,14 @@ class ProjectCard extends StatelessWidget {
                         children: [
                           Text(
                             "Progress",
-                            style: GoogleFonts.poppins(
+                            style: const TextStyle(
                               fontSize: 10,
                               color: Colors.white70,
                             ),
                           ),
                           Text(
                             "${(progress * 100).toInt()}%",
-                            style: GoogleFonts.poppins(
+                            style: const TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,

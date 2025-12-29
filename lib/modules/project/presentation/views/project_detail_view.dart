@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/theme/app_colors.dart';
 
@@ -472,7 +471,7 @@ class _ProjectDetailViewState extends State<ProjectDetailView> {
               child: Center(
                 child: Text(
                   "${point.id}",
-                  style: GoogleFonts.poppins(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
@@ -562,7 +561,7 @@ class _ProjectDetailViewState extends State<ProjectDetailView> {
             Expanded(
               child: Text(
                 widget.title,
-                style: GoogleFonts.poppins(
+                style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
@@ -617,7 +616,7 @@ class _ProjectDetailViewState extends State<ProjectDetailView> {
               bottom: false,
               child: Text(
                 "Inspection Checklist",
-                style: GoogleFonts.poppins(
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -711,7 +710,7 @@ class _ProjectDetailViewState extends State<ProjectDetailView> {
       color: Colors.grey[400],
       child: Text(
         text,
-        style: GoogleFonts.poppins(
+        style: TextStyle(
           fontWeight: FontWeight.bold,
           color: alignLeft ? Colors.black87 : Colors.blue[900],
           fontSize: alignLeft ? 14 : 16,
@@ -729,7 +728,7 @@ class _ProjectDetailViewState extends State<ProjectDetailView> {
       color: color,
       child: Text(
         text,
-        style: GoogleFonts.poppins(fontSize: 12, color: Colors.blue[900]),
+        style: TextStyle(fontSize: 12, color: Colors.blue[900]),
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
       ),
@@ -930,7 +929,7 @@ class _ProjectDetailViewState extends State<ProjectDetailView> {
             const SizedBox(width: 6),
             Text(
               label,
-              style: GoogleFonts.poppins(
+              style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w600,
                 fontSize: 12,

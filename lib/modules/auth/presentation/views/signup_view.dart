@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../controllers/auth_controller.dart';
 import '../../../../core/theme/app_colors.dart';
 
@@ -75,7 +74,7 @@ class SignupView extends GetView<AuthController> {
 
                     Text(
                       "Create Account",
-                      style: GoogleFonts.poppins(
+                      style: const TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -83,12 +82,9 @@ class SignupView extends GetView<AuthController> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Text(
+                    const Text(
                       "Join us for free",
-                      style: GoogleFonts.poppins(
-                        fontSize: 14,
-                        color: Colors.white70,
-                      ),
+                      style: TextStyle(fontSize: 14, color: Colors.white70),
                     ),
                     const SizedBox(height: 32),
 
@@ -114,7 +110,7 @@ class SignupView extends GetView<AuthController> {
                           const SizedBox(height: 8),
                           TextField(
                             controller: controller.nameController,
-                            style: GoogleFonts.poppins(fontSize: 14),
+                            style: const TextStyle(fontSize: 14),
                             decoration: _inputDecoration(
                               hint: "John Doe",
                               icon: Icons.person_outline,
@@ -128,7 +124,7 @@ class SignupView extends GetView<AuthController> {
                           TextField(
                             controller: controller.emailController,
                             keyboardType: TextInputType.emailAddress,
-                            style: GoogleFonts.poppins(fontSize: 14),
+                            style: const TextStyle(fontSize: 14),
                             decoration: _inputDecoration(
                               hint: "name@company.com",
                               icon: Icons.email_outlined,
@@ -143,11 +139,31 @@ class SignupView extends GetView<AuthController> {
                             () => TextField(
                               controller: controller.passwordController,
                               obscureText: !controller.isPasswordVisible.value,
-                              style: GoogleFonts.poppins(fontSize: 14),
+                              style: const TextStyle(fontSize: 14),
                               decoration: _inputDecoration(
                                 hint: "Create a password",
                                 icon: Icons.lock_outline,
                                 isPassword: true,
+                                isConfirm: false,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+
+                          // Confirm Password
+                          _buildTextFieldLabel("Confirm Password"),
+                          const SizedBox(height: 8),
+                          Obx(
+                            () => TextField(
+                              controller: controller.confirmPasswordController,
+                              obscureText:
+                                  !controller.isConfirmPasswordVisible.value,
+                              style: const TextStyle(fontSize: 14),
+                              decoration: _inputDecoration(
+                                hint: "Confirm your password",
+                                icon: Icons.lock_outline,
+                                isPassword: true,
+                                isConfirm: true,
                               ),
                             ),
                           ),
@@ -182,9 +198,9 @@ class SignupView extends GetView<AuthController> {
                                           strokeWidth: 2,
                                         ),
                                       )
-                                    : Text(
+                                    : const Text(
                                         "Create Account",
-                                        style: GoogleFonts.poppins(
+                                        style: TextStyle(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 16,
                                         ),
@@ -204,16 +220,16 @@ class SignupView extends GetView<AuthController> {
                       children: [
                         Text(
                           "Already have an account? ",
-                          style: GoogleFonts.poppins(
+                          style: const TextStyle(
                             color: AppColors.textSecondary,
                             fontSize: 14,
                           ),
                         ),
                         GestureDetector(
                           onTap: () => Get.back(),
-                          child: Text(
+                          child: const Text(
                             "Sign In",
-                            style: GoogleFonts.poppins(
+                            style: TextStyle(
                               color: AppColors.primary,
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
@@ -236,7 +252,7 @@ class SignupView extends GetView<AuthController> {
   Widget _buildTextFieldLabel(String label) {
     return Text(
       label,
-      style: GoogleFonts.poppins(
+      style: const TextStyle(
         fontSize: 13,
         fontWeight: FontWeight.w600,
         color: AppColors.textPrimary,
@@ -248,6 +264,7 @@ class SignupView extends GetView<AuthController> {
     required String hint,
     required IconData icon,
     bool isPassword = false,
+    bool isConfirm = false,
   }) {
     return InputDecoration(
       hintText: hint,
@@ -255,13 +272,19 @@ class SignupView extends GetView<AuthController> {
       suffixIcon: isPassword
           ? IconButton(
               icon: Icon(
-                controller.isPasswordVisible.value
-                    ? Icons.visibility_outlined
-                    : Icons.visibility_off_outlined,
+                isConfirm
+                    ? (controller.isConfirmPasswordVisible.value
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined)
+                    : (controller.isPasswordVisible.value
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined),
                 color: AppColors.textSecondary,
                 size: 20,
               ),
-              onPressed: controller.togglePasswordVisibility,
+              onPressed: isConfirm
+                  ? controller.toggleConfirmPasswordVisibility
+                  : controller.togglePasswordVisibility,
             )
           : null,
       filled: true,
