@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import '../../../../core/theme/app_colors.dart';
+import '../../data/models/create_project_request_model.dart';
 import '../controllers/project_controller.dart';
 
 class CreateProjectView extends StatefulWidget {
@@ -115,19 +116,14 @@ class _CreateProjectViewState extends State<CreateProjectView> {
       }
 
       // Create Project
-      final newProject = {
-        "title": _nameController.text,
-        "address": _addressController.text,
-        "startDate": _startDate,
-        "endDate": _endDate,
-        "assignedMembers": _assignedMembers,
-        "image": _selectedImage != null
-            ? _selectedImage!.path
-            : "https://picsum.photos/seed/${DateTime.now().millisecondsSinceEpoch}/800/600",
-        "supervisor": "https://i.pravatar.cc/150?u=99", // Current user mock
-      };
+      final newProject = CreateProjectRequestModel(
+        name: _nameController.text,
+        description: _addressController.text, // Mapping address to description
+        startDate: _startDate?.toIso8601String(),
+        endDate: _endDate?.toIso8601String(),
+      );
 
-      _projectController.addProject(newProject);
+      _projectController.createProject(newProject);
 
       Get.back();
       Get.snackbar(

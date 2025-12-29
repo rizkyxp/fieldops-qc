@@ -1,17 +1,18 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../core/theme/app_colors.dart';
 
 class ReflectDetailView extends StatelessWidget {
   final String projectTitle;
-  final String imageUrl;
+  final String? imageUrl;
   final double progress;
   final String personnelCount;
 
   const ReflectDetailView({
     super.key,
     required this.projectTitle,
-    required this.imageUrl,
+    this.imageUrl,
     required this.progress,
     required this.personnelCount,
   });
@@ -90,7 +91,51 @@ class ReflectDetailView extends StatelessWidget {
               background: Stack(
                 fit: StackFit.expand,
                 children: [
-                  Image.network(imageUrl, fit: BoxFit.cover),
+                  if (imageUrl != null && imageUrl!.isNotEmpty)
+                    imageUrl!.startsWith('http')
+                        ? Image.network(
+                            imageUrl!,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                color: Colors.grey[900],
+                                child: const Center(
+                                  child: Icon(
+                                    Icons.broken_image_rounded,
+                                    color: Colors.white24,
+                                    size: 48,
+                                  ),
+                                ),
+                              );
+                            },
+                          )
+                        : Image.file(
+                            File(imageUrl!),
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                color: Colors.grey[900],
+                                child: const Center(
+                                  child: Icon(
+                                    Icons.broken_image_rounded,
+                                    color: Colors.white24,
+                                    size: 48,
+                                  ),
+                                ),
+                              );
+                            },
+                          )
+                  else
+                    Container(
+                      color: Colors.grey[900],
+                      child: const Center(
+                        child: Icon(
+                          Icons.broken_image_rounded,
+                          color: Colors.white24,
+                          size: 48,
+                        ),
+                      ),
+                    ),
                   Container(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(

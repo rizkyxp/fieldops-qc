@@ -11,8 +11,8 @@ class AllProjectsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Inject Controller
-    final ProjectController controller = Get.put(ProjectController());
+    // Find Controller (injected via DashboardBinding)
+    final ProjectController controller = Get.find<ProjectController>();
 
     return DefaultTabController(
       length: 3,
@@ -84,21 +84,26 @@ class AllProjectsView extends StatelessWidget {
         itemCount: projects.length,
         itemBuilder: (context, index) {
           final project = projects[index];
+          // Determine status? or just show all
           return ProjectCard(
-            title: project['title'],
-            imageUrl: project['image'],
-            progress: project['progress'],
-            personnel: project['personnel'],
-            supervisorImageUrl: project['supervisor'],
+            title: project.name ?? "Untitled Project",
+            imageUrl: project.imageUrl,
+            progress: (project.progress ?? 0) / 100.0,
+            personnel: "${project.teamMembers?.length ?? 0} Personnel",
+            supervisorImageUrl:
+                "https://i.pravatar.cc/150?u=${project.id}", // Placeholder
             width: double.infinity, // Fill grid cell
             onTap: () {
               // Navigate to overview only for active projects for now, or all if robust
               Get.to(
                 () => ProjectOverviewView(
-                  projectTitle: project['title'],
-                  progress: project['progress'],
-                  personnelCount: project['personnel'],
-                  imageUrl: project['image'],
+                  projectTitle: project.name ?? "Untitled Project",
+                  progress: (project.progress ?? 0) / 100.0,
+                  personnelCount:
+                      "${project.teamMembers?.length ?? 0} Personnel",
+                  imageUrl:
+                      project.imageUrl ??
+                      "https://picsum.photos/seed/${project.id}/400/200",
                 ),
               );
             },

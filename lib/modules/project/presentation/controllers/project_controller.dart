@@ -1,75 +1,68 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../core/base/base_controller.dart';
+import '../../data/models/create_project_request_model.dart';
+import '../../data/models/project_response_model.dart';
+import '../../data/repositories/project_repository.dart';
 
-class ProjectController extends GetxController {
+class ProjectController extends BaseController {
+  final ProjectRepository _repository = ProjectRepository();
+
   // Observable list of projects
-  final RxList<Map<String, dynamic>> projects = <Map<String, dynamic>>[].obs;
+  final RxList<ProjectResponseModel> projects = <ProjectResponseModel>[].obs;
+  var isLoading = false.obs;
 
   @override
   void onInit() {
     super.onInit();
-    // Load mock data
-    projects.addAll([
-      {
-        "title": "Safety Inspection Area B",
-        "image": "https://picsum.photos/seed/construction_project/800/600",
-        "progress": 0.75,
-        "personnel": "3 Personnel",
-        "supervisor": "https://i.pravatar.cc/150?u=1",
-        "status": "in_progress",
-        "startDate": DateTime.now().subtract(const Duration(days: 10)),
-        "endDate": DateTime.now().add(const Duration(days: 20)),
-      },
-      {
-        "title": "Area B - Maintenance",
-        "image": "https://picsum.photos/seed/siteB/400/200",
-        "progress": 0.40,
-        "personnel": "8 Personnel",
-        "supervisor": "https://i.pravatar.cc/150?u=2",
-        "status": "in_progress",
-        "startDate": DateTime.now().subtract(const Duration(days: 5)),
-        "endDate": DateTime.now().add(const Duration(days: 25)),
-      },
-      {
-        "title": "Warehouse A Renovation",
-        "image": "https://picsum.photos/seed/warehouse/400/200",
-        "progress": 1.0,
-        "personnel": "5 Personnel",
-        "supervisor": "https://i.pravatar.cc/150?u=3",
-        "status": "completed",
-        "startDate": DateTime.now().subtract(const Duration(days: 40)),
-        "endDate": DateTime.now().subtract(const Duration(days: 2)),
-      },
-      {
-        "title": "Old Site Survey",
-        "image": "https://picsum.photos/seed/oldsite/400/200",
-        "progress": 1.0,
-        "personnel": "2 Personnel",
-        "supervisor": "https://i.pravatar.cc/150?u=4",
-        "status": "archived",
-        "startDate": DateTime.now().subtract(const Duration(days: 100)),
-        "endDate": DateTime.now().subtract(const Duration(days: 80)),
-      },
-    ]);
+    fetchProjects();
   }
 
-  void addProject(Map<String, dynamic> project) {
-    // Add status if missing, default to in_progress
-    if (!project.containsKey("status")) {
-      project["status"] = "in_progress";
-    }
-    // Add default progress and personnel if missing for new projects
-    if (!project.containsKey("progress")) {
-      project["progress"] = 0.0;
-    }
-    if (!project.containsKey("personnel")) {
-      project["personnel"] =
-          "${(project['assignedMembers'] as List).length} Personnel";
-    }
-
-    projects.insert(0, project);
+  Future<void> fetchProjects() async {
+    isLoading.value = true;
+    await call(
+      action: () => _repository.getProjects(),
+      onSuccess: (data) {
+        projects.assignAll(data);
+      },
+      useLoading: false, // Don't show global loading dialog
+    );
+    isLoading.value = false;
   }
 
-  List<Map<String, dynamic>> getProjectsByStatus(String status) {
-    return projects.where((p) => p['status'] == status).toList();
+  Future<void> createProject(CreateProjectRequestModel projectData) async {
+    isLoading.value = true;
+    await call(
+      action: () => _repository.createProject(projectData),
+      onSuccess: (data) {
+        Get.snackbar(
+          "Success",
+          "Project Created Successfully",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green.withValues(alpha: 0.1),
+          colorText: Colors.green,
+        );
+        projects.insert(0, data);
+        Get.back();
+      },
+    );
+    isLoading.value = false;
+  }
+
+  List<ProjectResponseModel> getProjectsByStatus(String status) {
+    if (status == 'all') return projects;
+
+    // Temporary: "semua project masih satu dulu saja di in progress semua"
+    if (status == 'in_progress') {
+      return projects;
+    }
+
+    // Register dependency to avoid "Improper use of GetX" error, even if we return empty
+    if (projects.isEmpty) {
+      // access property to register listener
+      debugPrint("accessed");
+    }
+
+    return [];
   }
 }

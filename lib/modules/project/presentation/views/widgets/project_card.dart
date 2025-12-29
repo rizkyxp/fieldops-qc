@@ -4,7 +4,7 @@ import 'dart:io';
 
 class ProjectCard extends StatelessWidget {
   final String title;
-  final String imageUrl;
+  final String? imageUrl;
   final double progress;
   final String personnel;
   final VoidCallback? onTap;
@@ -14,7 +14,7 @@ class ProjectCard extends StatelessWidget {
   const ProjectCard({
     super.key,
     required this.title,
-    required this.imageUrl,
+    this.imageUrl,
     required this.progress,
     required this.personnel,
     this.supervisorImageUrl,
@@ -29,18 +29,8 @@ class ProjectCard extends StatelessWidget {
       child: Container(
         width: width,
         decoration: BoxDecoration(
-          color: Colors.black,
+          color: Colors.black, // Fallback color
           borderRadius: BorderRadius.circular(24),
-          image: DecorationImage(
-            image: imageUrl.startsWith('http')
-                ? NetworkImage(imageUrl) as ImageProvider
-                : FileImage(File(imageUrl)),
-            fit: BoxFit.cover,
-            colorFilter: ColorFilter.mode(
-              Colors.black.withValues(alpha: 0.3), // 0.3 opacity
-              BlendMode.darken,
-            ),
-          ),
           boxShadow: [
             BoxShadow(
               color: AppColors.primary.withValues(alpha: 0.1),
@@ -51,17 +41,27 @@ class ProjectCard extends StatelessWidget {
         ),
         child: Stack(
           children: [
-            // Gradient Overlay
-            Container(
-              decoration: BoxDecoration(
+            // Background Image
+            Positioned.fill(
+              child: ClipRRect(
                 borderRadius: BorderRadius.circular(24),
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.transparent,
-                    Colors.black.withValues(alpha: 0.8),
-                  ],
+                child: _buildBackgroundImage(),
+              ),
+            ),
+
+            // Gradient Overlay
+            Positioned.fill(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(24),
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.transparent,
+                      Colors.black.withValues(alpha: 0.8),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -84,10 +84,25 @@ class ProjectCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: CircleAvatar(
-                    radius: 12, // Size of the avatar
-                    backgroundColor: Colors.grey[200],
-                    backgroundImage: NetworkImage(supervisorImageUrl!),
+                  child: ClipOval(
+                    child: SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: Image.network(
+                        supervisorImageUrl!,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            color: Colors.grey[200],
+                            child: const Icon(
+                              Icons.person,
+                              size: 16,
+                              color: Colors.grey,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -175,5 +190,56 @@ class ProjectCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildBackgroundImage() {
+    if (imageUrl == null || imageUrl!.isEmpty) {
+      return Container(
+        color: Colors.grey[900],
+        child: const Center(
+          child: Icon(
+            Icons.broken_image_rounded,
+            color: Colors.white24,
+            size: 48,
+          ),
+        ),
+      );
+    }
+
+    if (imageUrl!.startsWith('http')) {
+      return Image.network(
+        imageUrl!,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          return Container(
+            color: Colors.grey[900],
+            child: const Center(
+              child: Icon(
+                Icons.broken_image_rounded,
+                color: Colors.white24,
+                size: 48,
+              ),
+            ),
+          );
+        },
+      );
+    } else {
+      return Image.file(
+        File(imageUrl!),
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          return Container(
+            color: Colors.grey[900],
+            child: const Center(
+              child: Icon(
+                Icons.broken_image_rounded,
+                color: Colors.white24,
+                size: 48,
+              ),
+            ),
+          );
+        },
+      );
+    }
   }
 }

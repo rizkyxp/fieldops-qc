@@ -4,7 +4,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'interceptors/auth_interceptor.dart';
 import 'interceptors/mock_interceptor.dart';
-import 'interceptors/response_interceptor.dart';
 
 class DioService {
   late final Dio _dio;
@@ -19,7 +18,6 @@ class DioService {
     );
 
     _dio.interceptors.add(AuthInterceptor());
-    _dio.interceptors.add(ResponseInterceptor());
 
     // Check for Mock API flag
     if (dotenv.env['USE_MOCK_API'] == 'true') {
