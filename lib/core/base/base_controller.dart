@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart';
@@ -38,6 +39,14 @@ class BaseController extends GetxController {
 
       if (onError != null) {
         onError(e);
+      }
+
+      // Log error to console for debugging
+      if (kDebugMode) {
+        print("BaseController Error: $e");
+        if (e is Error) {
+          print("Stack trace: ${e.stackTrace}");
+        }
       }
 
       if (useError) {
@@ -85,7 +94,16 @@ class BaseController extends GetxController {
         message = error.message!;
       }
     } else if (error is Exception) {
-      message = error.toString().replaceAll("Exception: ", "");
+      if (kDebugMode) {
+        message = error.toString();
+      } else {
+        message = error.toString().replaceAll("Exception: ", "");
+      }
+    } else {
+      // Catch non-Exception errors (like TypeErrors) which are common in JSON parsing
+      if (kDebugMode) {
+        message = error.toString();
+      }
     }
 
     Get.snackbar(
