@@ -6,7 +6,9 @@ class RegisterResponseModel {
 
   factory RegisterResponseModel.fromJson(Map<String, dynamic> json) {
     return RegisterResponseModel(
-      success: json['status_code'] == 200,
+      success:
+          json['status_code'].toString() == '200' ||
+          json['status_code'].toString() == '201',
       message: json['message'] as String,
     );
   }

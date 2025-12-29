@@ -41,4 +41,12 @@ class AuthRepository {
       rethrow;
     }
   }
+
+  Future<void> logout() async {
+    try {
+      await _dataSource.logout();
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

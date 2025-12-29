@@ -15,6 +15,7 @@ class AuthController extends BaseController {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final nameController = TextEditingController(); // For Signup
+  final companyNameController = TextEditingController(); // For Signup
   final confirmPasswordController = TextEditingController(); // For Signup
 
   var isLoading = false.obs;
@@ -72,6 +73,7 @@ class AuthController extends BaseController {
     final name = nameController.text.trim();
     final email = emailController.text.trim();
     final password = passwordController.text;
+    final companyName = companyNameController.text.trim();
     final confirmPassword = confirmPasswordController.text;
 
     if (name.isEmpty ||
@@ -123,26 +125,60 @@ class AuthController extends BaseController {
 
     isLoading.value = true;
 
-    // Use call() wrapper for real implementation when endpoint exists
-    // simulating delay for now as per previous mock logic, but let's use the repo if possible
-    // or keep the mock delay if that's what was intended.
-    // The previous code had a manual delay. Let's redirect to login for now.
-
-    await Future.delayed(const Duration(seconds: 2)); // Simulate API call
-    isLoading.value = false;
-
-    Get.snackbar(
-      "Success",
-      "Account created successfully",
-      snackPosition: SnackPosition.BOTTOM,
+    await call(
+      action: () => _repository.register(
+        companyName: companyName,
+        name: name,
+        email: email,
+        password: password,
+      ),
+      onSuccess: (data) {
+        debugPrint("Signup Success: ${data.success}, Message: ${data.message}");
+        if (data.success) {
+          Get.snackbar(
+            "Success",
+            data.message,
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.green.withValues(alpha: 0.1),
+            colorText: Colors.green,
+          );
+          // Wait briefly to ensure snackbar is seen/registered before navigating
+          Future.delayed(const Duration(milliseconds: 500));
+          Get.offAllNamed(LoginView.route);
+        } else {
+          debugPrint("Signup Failed: Success is false");
+          Get.snackbar(
+            "Error",
+            data.message,
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red.withValues(alpha: 0.1),
+            colorText: Colors.red,
+          );
+        }
+      },
+      onError: (e) {
+        debugPrint("Signup Error: $e");
+        Get.snackbar(
+          "Error",
+          e.toString(),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red.withValues(alpha: 0.1),
+          colorText: Colors.red,
+        );
+      },
     );
-    // Navigate or Go back to Login
-    Get.back();
+
+    isLoading.value = false;
   }
 
   // Logout Function
   Future<void> logout() async {
     isLoading.value = true;
+    try {
+      await _repository.logout();
+    } catch (e) {
+      debugPrint("Logout API error: $e");
+    }
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(StorageKeys.accessToken);
     isLoading.value = false;

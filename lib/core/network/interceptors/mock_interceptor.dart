@@ -25,11 +25,22 @@ class MockInterceptor extends Interceptor {
       handler.resolve(
         Response(
           requestOptions: options,
-          statusCode: 200,
+          statusCode: 201,
           data: {
-            "status_code": 200,
+            "status_code": 201,
             "message": "Registration Successful (Mock)",
           },
+        ),
+      );
+      return;
+    }
+
+    if (options.path.contains(ApiEndpoints.logout)) {
+      handler.resolve(
+        Response(
+          requestOptions: options,
+          statusCode: 200,
+          data: {"status_code": 200, "message": "Logged out successfully"},
         ),
       );
       return;

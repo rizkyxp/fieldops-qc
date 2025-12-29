@@ -118,6 +118,19 @@ class SignupView extends GetView<AuthController> {
                           ),
                           const SizedBox(height: 24),
 
+                          // Company Name
+                          _buildTextFieldLabel("Company Name (Optional)"),
+                          const SizedBox(height: 8),
+                          TextField(
+                            controller: controller.companyNameController,
+                            style: const TextStyle(fontSize: 14),
+                            decoration: _inputDecoration(
+                              hint: "FieldOps Inc.",
+                              icon: Icons.business_outlined,
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+
                           // Email
                           _buildTextFieldLabel("Email Address"),
                           const SizedBox(height: 8),

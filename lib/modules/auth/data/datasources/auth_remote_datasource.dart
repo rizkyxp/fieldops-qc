@@ -16,7 +16,8 @@ class AuthRemoteDataSource {
       ApiEndpoints.login,
       data: request.toJson(),
     );
-    return LoginResponseModel.fromJson(response.data);
+    // Explicitly access 'data' key for login response
+    return LoginResponseModel.fromJson(response.data['data']);
   }
 
   Future<RegisterResponseModel> register(RegisterRequestModel request) async {
@@ -24,6 +25,11 @@ class AuthRemoteDataSource {
       ApiEndpoints.register,
       data: request.toJson(),
     );
+    // Use full response for register to access status_code and message
     return RegisterResponseModel.fromJson(response.data);
+  }
+
+  Future<void> logout() async {
+    await _dio.post(ApiEndpoints.logout);
   }
 }
