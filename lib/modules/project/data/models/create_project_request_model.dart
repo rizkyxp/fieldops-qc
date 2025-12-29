@@ -5,12 +5,14 @@ class CreateProjectRequestModel {
   final String? endDate;
   final String? name;
   final String? startDate;
+  final List<int>? teamMembers;
 
   CreateProjectRequestModel({
     this.description,
     this.endDate,
     this.name,
     this.startDate,
+    this.teamMembers,
   });
 
   String toRawJson() => json.encode(toJson());
@@ -20,5 +22,6 @@ class CreateProjectRequestModel {
     "end_date": endDate,
     "name": name,
     "start_date": startDate,
+    "team_members": teamMembers,
   };
 }

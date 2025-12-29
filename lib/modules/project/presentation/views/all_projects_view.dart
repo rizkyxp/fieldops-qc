@@ -93,20 +93,12 @@ class AllProjectsView extends StatelessWidget {
             supervisorImageUrl:
                 "https://i.pravatar.cc/150?u=${project.id}", // Placeholder
             width: double.infinity, // Fill grid cell
-            onTap: () {
-              // Navigate to overview only for active projects for now, or all if robust
-              Get.to(
-                () => ProjectOverviewView(
-                  projectTitle: project.name ?? "Untitled Project",
-                  progress: (project.progress ?? 0) / 100.0,
-                  personnelCount:
-                      "${project.teamMembers?.length ?? 0} Personnel",
-                  imageUrl:
-                      project.imageUrl ??
-                      "https://picsum.photos/seed/${project.id}/400/200",
-                ),
-              );
-            },
+            onTap: () => Get.to(
+              () => ProjectOverviewView(
+                projectId: project.id!,
+                initialData: project,
+              ),
+            ),
           );
         },
       );

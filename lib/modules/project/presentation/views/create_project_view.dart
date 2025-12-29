@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'dart:io';
 import '../../../../core/theme/app_colors.dart';
 import '../../data/models/create_project_request_model.dart';
@@ -14,25 +15,22 @@ class CreateProjectView extends StatefulWidget {
 }
 
 class _CreateProjectViewState extends State<CreateProjectView> {
-  final ProjectController _projectController = Get.put(ProjectController());
+  final ProjectController _projectController = Get.find<ProjectController>();
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   DateTime? _startDate;
   DateTime? _endDate;
-  final List<String> _assignedMembers = [];
+
+  // Store User IDs
   File? _selectedImage;
   final ImagePicker _picker = ImagePicker();
 
-  // Mock Members Data
-  final List<Map<String, dynamic>> _availableMembers = [
-    {"name": "Rizky Firmansyah", "avatar": "https://i.pravatar.cc/150?u=1"},
-    {"name": "Andi Saputra", "avatar": "https://i.pravatar.cc/150?u=2"},
-    {"name": "Budi Santoso", "avatar": "https://i.pravatar.cc/150?u=3"},
-    {"name": "Siti Aminah", "avatar": "https://i.pravatar.cc/150?u=4"},
-    {"name": "Joko Anwar", "avatar": "https://i.pravatar.cc/150?u=5"},
-  ];
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -41,16 +39,8 @@ class _CreateProjectViewState extends State<CreateProjectView> {
     super.dispose();
   }
 
-  Future<void> _pickImage(ImageSource source) async {
-    final XFile? image = await _picker.pickImage(source: source);
-    if (image != null) {
-      setState(() {
-        _selectedImage = File(image.path);
-      });
-    }
-  }
-
-  void _showImageSourceActionSheet(BuildContext context) {
+  Future<void> _pickImage() async {
+    // Show modal to choose between camera and gallery
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -64,9 +54,16 @@ class _CreateProjectViewState extends State<CreateProjectView> {
               ListTile(
                 leading: const Icon(Icons.camera_alt, color: AppColors.primary),
                 title: const Text("Take Photo"),
-                onTap: () {
+                onTap: () async {
                   Get.back();
-                  _pickImage(ImageSource.camera);
+                  final XFile? image = await _picker.pickImage(
+                    source: ImageSource.camera,
+                  );
+                  if (image != null) {
+                    setState(() {
+                      _selectedImage = File(image.path);
+                    });
+                  }
                 },
               ),
               ListTile(
@@ -75,9 +72,16 @@ class _CreateProjectViewState extends State<CreateProjectView> {
                   color: AppColors.primary,
                 ),
                 title: const Text("Choose from Gallery"),
-                onTap: () {
+                onTap: () async {
                   Get.back();
-                  _pickImage(ImageSource.gallery);
+                  final XFile? image = await _picker.pickImage(
+                    source: ImageSource.gallery,
+                  );
+                  if (image != null) {
+                    setState(() {
+                      _selectedImage = File(image.path);
+                    });
+                  }
                 },
               ),
             ],
@@ -102,6 +106,7 @@ class _CreateProjectViewState extends State<CreateProjectView> {
         );
         return;
       }
+
       if (_endDate!.isBefore(_startDate!)) {
         Get.snackbar(
           "Error",
@@ -118,9 +123,9 @@ class _CreateProjectViewState extends State<CreateProjectView> {
       // Create Project
       final newProject = CreateProjectRequestModel(
         name: _nameController.text,
-        description: _addressController.text, // Mapping address to description
-        startDate: _startDate?.toIso8601String(),
-        endDate: _endDate?.toIso8601String(),
+        description: _addressController.text,
+        startDate: _startDate!.toIso8601String(),
+        endDate: _endDate!.toIso8601String(),
       );
 
       _projectController.createProject(newProject);
@@ -138,27 +143,65 @@ class _CreateProjectViewState extends State<CreateProjectView> {
     }
   }
 
+  Future<void> _selectDate(BuildContext context, bool isStart) async {
+    final now = DateTime.now();
+    // Determine the earliest allowed date (firstDate)
+    // If selecting Start Date: earliest is today (now).
+    // If selecting End Date: earliest is the Start Date (if set) or today.
+    final DateTime firstDate = isStart ? now : (_startDate ?? now);
+
+    // Ensure firstDate is not in the past relative to now (if that's desired behavior),
+    // but showDatePicker usually handles "from now" fine. However, strict logic:
+    // If firstDate is before now, it might cause issues if we strictly want future dates.
+    // For safety, let's keep firstDate as is but ensure we don't pick before it.
+
+    // Calculate initialDate
+    // If we have a previously selected value, use it.
+    // If not, default to firstDate (THIS IS KEY: Default to firstDate, NOT DateTime.now()).
+    // If we default to DateTime.now() while firstDate is in the future (e.g. Start Date = Dec 31),
+    // then initialDate (Dec 29) < firstDate (Dec 31) => Crash.
+    DateTime initialDate = (isStart ? _startDate : _endDate) ?? firstDate;
+
+    // Safety check: specific case where user selected a date, then changed constraint (e.g. moved Start Date ahead of old End Date)
+    if (initialDate.isBefore(firstDate)) {
+      initialDate = firstDate;
+    }
+
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: initialDate,
+      firstDate: firstDate,
+      lastDate: DateTime(2030),
+    );
+
+    if (picked != null) {
+      setState(() {
+        if (isStart) {
+          _startDate = picked;
+          // If start date is after end date, clear end date or auto-update
+          if (_endDate != null && _startDate!.isAfter(_endDate!)) {
+            _endDate = null; // Clear invalid end date, force user to re-select
+          }
+        } else {
+          _endDate = picked;
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Create New Project",
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary,
-          ),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.background,
+        centerTitle: true,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new,
-            color: AppColors.textPrimary,
-          ),
-          onPressed: () => Get.back(),
-        ),
+        leading: const BackButton(color: AppColors.textPrimary),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
@@ -167,20 +210,20 @@ class _CreateProjectViewState extends State<CreateProjectView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // 1. Project Photo Picker
+              // Image Picker
               Center(
                 child: GestureDetector(
-                  onTap: () => _showImageSourceActionSheet(context),
+                  onTap: _pickImage,
                   child: Container(
                     width: double.infinity,
-                    height: 200,
+                    height: 180,
                     decoration: BoxDecoration(
                       color: AppColors.tertiary.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: AppColors.tertiary.withValues(alpha: 0.3),
-                        style: BorderStyle.solid,
+                        color: AppColors.primary.withValues(alpha: 0.3),
                         width: 1,
+                        style: BorderStyle.solid,
                       ),
                       image: _selectedImage != null
                           ? DecorationImage(
@@ -193,15 +236,24 @@ class _CreateProjectViewState extends State<CreateProjectView> {
                         ? Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(
-                                Icons.add_a_photo_rounded,
-                                size: 48,
-                                color: AppColors.textSecondary,
+                              Container(
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: AppColors.primary.withValues(
+                                    alpha: 0.1,
+                                  ),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(
+                                  Icons.add_a_photo_rounded,
+                                  color: AppColors.primary,
+                                  size: 32,
+                                ),
                               ),
                               const SizedBox(height: 12),
-                              Text(
-                                "Upload Project Photo",
-                                style: const TextStyle(
+                              const Text(
+                                "Upload Project Cover",
+                                style: TextStyle(
                                   color: AppColors.textSecondary,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -213,175 +265,125 @@ class _CreateProjectViewState extends State<CreateProjectView> {
                 ),
               ),
               const SizedBox(height: 24),
-              // ... rest of the file
 
-              // 2. Project Name
-              _buildTextField(
+              // Project Name
+              _buildLabel("Project Name"),
+              TextFormField(
                 controller: _nameController,
-                label: "Project Name",
-                hint: "Enter project name",
-                icon: Icons.business_center_outlined,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Please enter project name";
-                  }
-                  return null;
-                },
+                validator: (value) =>
+                    value == null || value.isEmpty ? "Required" : null,
+                decoration: _buildInputDecoration(
+                  hint: "Enter project name",
+                  icon: Icons.business_center_outlined,
+                ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 20),
 
-              // 3. Address
-              _buildTextField(
+              // Description
+              _buildLabel("Description"),
+              TextFormField(
                 controller: _addressController,
-                label: "Address",
-                hint: "Enter project address",
-                icon: Icons.location_on_outlined,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Please enter address";
-                  }
-                  return null;
-                },
+                maxLines: 3,
+                validator: (value) =>
+                    value == null || value.isEmpty ? "Required" : null,
+                decoration: _buildInputDecoration(
+                  hint: "Enter project description",
+                  icon: Icons.description_outlined,
+                ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 20),
 
-              // 4. Dates
+              // Date Range
               Row(
                 children: [
                   Expanded(
-                    child: _buildDatePicker(
-                      label: "Start Date",
-                      selectedDate: _startDate,
-                      onTap: () async {
-                        final date = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime(2030),
-                        );
-                        if (date != null) setState(() => _startDate = date);
-                      },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildLabel("Start Date"),
+                        GestureDetector(
+                          onTap: () => _selectDate(context, true),
+                          child: AbsorbPointer(
+                            child: TextFormField(
+                              controller: TextEditingController(
+                                text: _startDate != null
+                                    ? DateFormat(
+                                        'dd MMMM yyyy',
+                                      ).format(_startDate!)
+                                    : "",
+                              ),
+                              decoration: _buildInputDecoration(
+                                hint: "Select Date",
+                                icon: Icons.calendar_today_outlined,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
-                    child: _buildDatePicker(
-                      label: "End Date",
-                      selectedDate: _endDate,
-                      onTap: () async {
-                        final date = await showDatePicker(
-                          context: context,
-                          initialDate:
-                              _startDate ?? DateTime.now(), // Limit start
-                          firstDate: _startDate ?? DateTime.now(),
-                          lastDate: DateTime(2030),
-                        );
-                        if (date != null) setState(() => _endDate = date);
-                      },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildLabel("End Date"),
+                        GestureDetector(
+                          onTap: () => _selectDate(context, false),
+                          child: AbsorbPointer(
+                            child: TextFormField(
+                              controller: TextEditingController(
+                                text: _endDate != null
+                                    ? DateFormat(
+                                        'dd MMMM yyyy',
+                                      ).format(_endDate!)
+                                    : "",
+                              ),
+                              decoration: _buildInputDecoration(
+                                hint: "Select Date",
+                                icon: Icons.event_outlined,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 20),
 
-              // 5. Assign Members
-              Text(
-                "Assign Members",
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-              const SizedBox(height: 12),
-              SizedBox(
-                height: 60,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    ..._assignedMembers.map((name) {
-                      final member = _availableMembers.firstWhere(
-                        (m) => m['name'] == name,
-                        orElse: () => {"name": "?", "avatar": ""},
-                      );
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 12),
-                        child: Stack(
-                          children: [
-                            CircleAvatar(
-                              radius: 24,
-                              backgroundImage: NetworkImage(
-                                member['avatar'] ?? "",
-                              ),
-                            ),
-                            Positioned(
-                              right: 0,
-                              top: 0,
-                              child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    _assignedMembers.remove(name);
-                                  });
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.all(2),
-                                  decoration: const BoxDecoration(
-                                    color: Colors.red,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: const Icon(
-                                    Icons.close,
-                                    size: 12,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }),
-                    GestureDetector(
-                      onTap: () => _showMemberSelectionSheet(),
-                      child: Container(
-                        width: 48,
-                        height: 48,
-                        decoration: BoxDecoration(
-                          color: AppColors.primary.withValues(alpha: 0.1),
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: AppColors.primary,
-                            style: BorderStyle.solid,
-                          ),
-                        ),
-                        child: const Icon(Icons.add, color: AppColors.primary),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 40),
+              // Assign Members Removed as per user request
+              const SizedBox(height: 32),
+              const SizedBox(height: 32),
 
-              // 6. Submit Button
+              // Submit Button
               SizedBox(
                 width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _submit,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
+                height: 56,
+                child: Obx(
+                  () => ElevatedButton(
+                    onPressed: _projectController.isLoading.value
+                        ? null
+                        : _submit,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      elevation: 4,
+                      shadowColor: AppColors.primary.withValues(alpha: 0.4),
                     ),
-                    elevation: 0,
-                  ),
-                  child: Text(
-                    "Create Project",
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                    ),
+                    child: _projectController.isLoading.value
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : const Text(
+                            "Create Project",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
                   ),
                 ),
               ),
@@ -392,151 +394,35 @@ class _CreateProjectViewState extends State<CreateProjectView> {
     );
   }
 
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String label,
+  Widget _buildLabel(String label) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: Text(
+        label,
+        style: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+          color: AppColors.textPrimary,
+        ),
+      ),
+    );
+  }
+
+  InputDecoration _buildInputDecoration({
     required String hint,
     required IconData icon,
-    String? Function(String?)? validator,
   }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary,
-          ),
-        ),
-        const SizedBox(height: 8),
-        TextFormField(
-          controller: controller,
-          validator: validator,
-          decoration: InputDecoration(
-            hintText: hint,
-            hintStyle: const TextStyle(color: AppColors.textSecondary),
-            prefixIcon: Icon(icon, color: AppColors.textSecondary),
-            filled: true,
-            fillColor: Colors.white,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide.none,
-            ),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 16,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDatePicker({
-    required String label,
-    required DateTime? selectedDate,
-    required VoidCallback onTap,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary,
-          ),
-        ),
-        const SizedBox(height: 8),
-        GestureDetector(
-          onTap: onTap,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Row(
-              children: [
-                const Icon(
-                  Icons.calendar_today_outlined,
-                  size: 20,
-                  color: AppColors.textSecondary,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  selectedDate != null
-                      ? "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}"
-                      : "Select Date",
-                  style: TextStyle(
-                    color: selectedDate != null
-                        ? AppColors.textPrimary
-                        : AppColors.textSecondary,
-                    fontSize: 13,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  void _showMemberSelectionSheet() {
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+    return InputDecoration(
+      hintText: hint,
+      hintStyle: const TextStyle(color: AppColors.textSecondary),
+      prefixIcon: Icon(icon, color: AppColors.textSecondary),
+      filled: true,
+      fillColor: Colors.white,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide.none,
       ),
-      builder: (context) {
-        return Container(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Select Member",
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-              const SizedBox(height: 16),
-              ..._availableMembers.map((member) {
-                final isSelected = _assignedMembers.contains(member['name']);
-                return ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: NetworkImage(member['avatar'] ?? ""),
-                  ),
-                  title: Text(
-                    member['name'],
-                    style: const TextStyle(fontWeight: FontWeight.w500),
-                  ),
-                  trailing: isSelected
-                      ? const Icon(Icons.check_circle, color: AppColors.primary)
-                      : const Icon(Icons.circle_outlined, color: Colors.grey),
-                  onTap: () {
-                    setState(() {
-                      if (isSelected) {
-                        _assignedMembers.remove(member['name']);
-                      } else {
-                        _assignedMembers.add(member['name']);
-                      }
-                    });
-                    Get.back();
-                  },
-                );
-              }),
-            ],
-          ),
-        );
-      },
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
     );
   }
 }

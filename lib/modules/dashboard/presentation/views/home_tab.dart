@@ -354,13 +354,8 @@ class _HomeTabState extends State<HomeTab> {
                             "https://i.pravatar.cc/150?u=${project.id}", // Placeholder
                         onTap: () => Get.to(
                           () => ProjectOverviewView(
-                            projectTitle: project.name ?? "Untitled Project",
-                            progress: (project.progress ?? 0) / 100.0,
-                            personnelCount:
-                                "${project.teamMembers?.length ?? 0} Personnel",
-                            imageUrl:
-                                project.imageUrl ??
-                                "https://picsum.photos/seed/${project.id}/400/200",
+                            projectId: project.id!,
+                            initialData: project,
                           ),
                         ),
                       );

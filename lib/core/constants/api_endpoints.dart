@@ -3,6 +3,7 @@ class ApiEndpoints {
   static const String login = '/mobile/auth/login';
   static const String register = '/mobile/auth/register';
   static const String logout = '/mobile/auth/logout';
+  static const String listUser = '/mobile/users';
 
   // Project
   static const String getProjects = '/mobile/projects';

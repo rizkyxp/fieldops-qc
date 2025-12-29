@@ -1,6 +1,8 @@
 import '../datasources/project_remote_datasource.dart';
+import '../models/add_member_request_model.dart';
 import '../models/create_project_request_model.dart';
 import '../models/project_response_model.dart';
+import '../models/team_member_response_model.dart';
 
 class ProjectRepository {
   final ProjectRemoteDataSource _dataSource;
@@ -34,9 +36,17 @@ class ProjectRepository {
     }
   }
 
-  Future<void> addProjectMember(int projectId, int userId) async {
+  Future<void> addMember(int projectId, AddMemberRequestModel request) async {
     try {
-      await _dataSource.addProjectMember(projectId, userId);
+      await _dataSource.addProjectMember(projectId, request);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<TeamMemberResponseModel>> getUsers() async {
+    try {
+      return await _dataSource.getUsers();
     } catch (e) {
       rethrow;
     }
